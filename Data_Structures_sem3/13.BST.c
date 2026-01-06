@@ -16,7 +16,7 @@ struct node *createNode(int val){
     n->right=NULL;
     return n;
 }
-
+                                  //Traversal
 void preorder(struct node *root){
     if(root!=NULL){
         printf("%d\t",root->data);
@@ -38,23 +38,36 @@ void postorder(struct node *root){
         printf("%d\t",root->data);
     }
 }
-//check if binary tree is BST or not?
-int isBST(struct node *root){
-    static struct node *prev=NULL;
+
+//insertion
+struct node *insert(struct node *root, int data){
+    if(root==NULL){
+        return createNode(data);
+    }
+    else if(data==root->data){
+        return root;
+    }
+    else if(data>root->data){
+        root->right=insert(root->right,data);
+    }else{
+        root->left=insert(root->left,data);
+    }
+    return root;
+} 
+//creation of BST : construction of binary search tree
+struct node *create_bst(struct node *root, int arr[],int n){
     if(root!=NULL){
-        if(!isBST(root->left)){
-            return 0;
-        }
-        if(prev!=NULL && root->data <= prev->data){
-            return 0;
-        }
-        prev=root;
-        return isBST(root->right);
+        printf("BST already exist\n");
     }
     else{
-        return 1;
+        for(int i=0;i<n;i++){
+            root=insert(root,arr[i]);
+        }
+        printf("BST created successfully\n");
     }
+    return root;
 }
+
 //searching in BST
 void search(struct node *root,int key){
     if(root==NULL){
@@ -62,9 +75,9 @@ void search(struct node *root,int key){
     }else if(root->data==key){
         printf("element %d found\n",key);
     }else if(key<root->data){
-        return search(root->left,key);
+        search(root->left,key);
     }else{
-        return search(root->right,key);
+        search(root->right,key);
     }
 }
 //iterative search
@@ -81,72 +94,64 @@ struct node *iterative_search(struct node *root,int key){
     }
     return NULL;
 }
-//insertion
-void insert(struct node *root, int val){
-    struct node *prev=NULL;
-    while(root!=NULL){
-        prev=root;
-        if(val==root->data){
-            printf("cannot insert duplicate element\n");
-            return;
-        }else if(val<root->data){
-            root=root->left;
-        }else{
-            root=root->right;
+
+                        //deletion in binary tree
+struct node *deleteNode(struct node *root,int val){
+    if(root==NULL){
+        return NULL;}
+    //searching the node that has to be deleted
+    else if(val<root->data){
+        root->left=deleteNode(root->left,val);}
+    else if(val>root->data){
+        root->right=deleteNode(root->right,val);}
+    else{
+        //1.leaf node
+        if(root->left==NULL && root->right==NULL){     
+            free(root);
+            NULL;
+        }
+        //2.one node exist
+        else if(root->right==NULL){        //left node exist
+            struct node *temp=root->left;
+            free(root);
+            return temp;
+        }
+        else if(root->left==NULL){          //right node exist
+            struct node *temp=root->right;
+            free(root);
+            return temp;
+        }
+        //3.both nodes exist
+        else{
+            //find the greatest element from the left subtree
+            struct node *parent=root;
+            struct node *child=root->left;
+            while(child!=NULL){      //reaching to the right most node
+                parent=child;
+                child=child->right;
+            }
+            if(root!=parent){
+                parent->right=child->left;
+                child->left=root->left;
+                child->right=root->right;
+                free(root);
+                return child;
+            }else{
+                child->right=root->right;
+                free(root);
+                return child;
+            }
         }
     }
-    struct node *newNode=createNode(val);
-    if(val<prev->data){
-        prev->left=newNode;
-    }else{
-        prev->right=newNode;
-    }
-}
-//inorder predecessor function : return the inorder preceeding node of a given node
-struct node *inorder_predecessor(struct node *root){      //here root node will be a given node
-    root=root->left;
-    while(root->right!=NULL){
-        root=root->right;
-    }
     return root;
-}
-
-//deletion
-struct node *deleteNode(struct node *root, int value){
-    struct node *ipre;      //ipre = stores inorder predecessor
-    if(root==NULL){
-        return NULL;
-    }
-    if(root->left==NULL && root->right==NULL){           //leaf node condition
-        free(root);
-        return NULL;
-    }
-    //search for the node to delete
-    if(value<root->data){
-        root->left=deleteNode(root->left,value);
-    }
-    else if(value>root->data){
-        root->right=deleteNode(root->right,value);
-    }
-    //deletion strategy when node is found
-    else{
-        ipre=inorder_predecessor(root);
-        root->data=ipre->data;
-        root->left=deleteNode(root->left,ipre->data);
-    }
-    return root;
-}
-
-
+}                  
 
 int main(){
-    struct node *p=createNode(5);         //root node
-    struct node *p1=createNode(3);
-    struct node *p2=createNode(6);
-    struct node *p3=createNode(1);
-    struct node *p4=createNode(4);
-    struct node *p5=createNode(8);
-
+    struct node *root=NULL;   //root node
+    int arr[]={5,3,6,2,4,8,1};        //creating a bst using an array of elements
+    int n=sizeof(arr)/sizeof(arr[0]);
+    root=create_bst(root,arr,n);
+    
     /*
                                     5
                                   /   \
@@ -154,26 +159,12 @@ int main(){
                                /  \   /  \
                               1    4 N    8
     */
-
-    // linking the root node with p1 & p2 node
-    p->left=p1;
-    p->right=p2;
-
-    p1->left=p3;
-    p1->right=p4;
-
-    p2->right=p5;
-
-    //traversal
-    // printf("preorder \n"); preorder(p); printf("\n");
-    // printf("postorder \n"); postorder(p); printf("\n");
-
-    printf("inorder \n");  inorder(p);   //ascending order 
+    printf("inorder \n");  inorder(root);   //ascending order 
     printf("\n");
 
     //searching
     int key=6;
-    search(p,key);
+    search(root,key);
     //iteraive search
     // struct node *s=iterative_search(p,key);
     // if(s!=NULL){
@@ -183,16 +174,18 @@ int main(){
     // }
 
     //insertion
-    insert(p,7);
-    printf("inorder \n");  inorder(p);   //ascending order 
+    insert(root,7);
+    inorder(root);   //ascending order 
+    printf("\n");
+
+    insert(root,9);
+    inorder(root);
     printf("\n");
 
     //deletion
-    struct node *newroot=deleteNode(p,8);
-    printf("%d\n",newroot->data);
-    printf("inorder \n");  inorder(p);   //ascending order 
+    deleteNode(root,6);
+    inorder(root);
     printf("\n");
-
 
     return 0;
 }

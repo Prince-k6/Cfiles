@@ -41,24 +41,6 @@ void postorder(struct node *root){
 
 
 int main(){
-    // //root node
-    // struct node *p=(struct node *)malloc(sizeof(struct node));
-    // p->data=99;
-    // p->left=NULL;
-    // p->right=NULL;
-
-    // //first child node
-    // struct node *p1=(struct node *)malloc(sizeof(struct node));
-    // p1->data=97;
-    // p1->left=NULL;
-    // p1->right=NULL;
-
-    // //second child node
-    // struct node *p2=(struct node *)malloc(sizeof(struct node));
-    // p2->data=84;
-    // p2->left=NULL;
-    // p2->right=NULL;
-
     struct node *p=createNode(4);
     struct node *p1=createNode(1);
     struct node *p2=createNode(6);
