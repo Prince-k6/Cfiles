@@ -8,9 +8,9 @@
 typedef struct{
     int key;
     char name[20];
-} Data;
+} Emp;
 
-Data *hashtable[100];        //hashtble using arrays
+Emp *hashtable[100];        //hashtble using arrays
 #define tablesize 5            //or take user input
 
 //hash function : it returns the hash value on taking key
@@ -33,7 +33,7 @@ void displayHashtable(){
 
 //insetion in hashtable with linear probing
 void linear_probing_insert(int key, char name[]){
-    Data *newdata=(Data *)malloc(sizeof(Data));
+    Emp *newdata=(Emp *)malloc(sizeof(Emp));
     if(newdata==NULL){
         printf("memory allocation failed\n");
         exit(1);
