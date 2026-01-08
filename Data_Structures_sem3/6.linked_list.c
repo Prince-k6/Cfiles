@@ -8,14 +8,15 @@ struct node{
 };
 
 //linked list traversal
-void display(struct node *ptr){       
-    while(ptr!=NULL){
+void display(struct node *head){      
+    struct node *ptr=head; 
+    while(ptr->next!=NULL){
         printf("%d\t",ptr->data);
         ptr=ptr->next;
     }
-    printf("\n");
+    printf("%d\n",ptr->data);
 }
-                                            //linked list insertion
+                                        //linked list insertion
 //1.front insertion
 struct node* insert_at_front(struct node *head,int val){
     struct node *ptr=(struct node*)malloc(sizeof(struct node));
@@ -27,7 +28,6 @@ struct node* insert_at_front(struct node *head,int val){
 struct node* insert_at_index(struct node *head,int index,int val){
     struct node* ptr=(struct node*)malloc(sizeof(struct node));   //node that'll be inserted
     struct node* p=head;   
-    p=head;
     int count=0;
     while(count!=index-1){
         p=p->next;
@@ -61,6 +61,9 @@ struct node* insert_after(struct node* head,struct node *prevNode,int val){
                                     //deletion in linked list
 //5.deleting first node
 struct node* delete_first(struct node* head){
+    if(head==NULL){
+        return NULL;
+    }
     struct node *ptr=head;
     head=head->next;
     free(ptr);
@@ -69,12 +72,15 @@ struct node* delete_first(struct node* head){
 }
 //6.deleting a node in b/w
 struct node *delete_at_index(struct node *head,int index){
-    struct node *p=head->next;
-    struct node *q=head;
+    if(head==NULL){
+        return NULL;
+    }
+    struct node *q=NULL;
+    struct node *p=head;
     int i=0;
     while(i!=index-1){
+        q=p;
         p=p->next;
-        q=q->next;
         i++;
     }
     q->next=p->next;
@@ -110,45 +116,32 @@ struct node *delete_with_value(struct node *head,int value){
     p=NULL;  // to remove garbage values also
     return head;
 }
+
+struct node *createNode(int val){
+    struct node *ptr=(struct node *)malloc(sizeof(struct node));
+    ptr->data=val;
+    ptr->next=NULL;
+    return ptr;
+}
 int main(){
     //created 3 nodes in heap memory cause of dynamic memory allocation
-    struct node *head=(struct node*)malloc(sizeof(struct node));
-    struct node *second=(struct node*)malloc(sizeof(struct node));
-    struct node *third=(struct node*)malloc(sizeof(struct node));
-    struct node *fourth=(struct node*)malloc(sizeof(struct node));
+    struct node *head=createNode(7);
+    struct node *second=createNode(11);
+    struct node *third=createNode(66);
+    struct node *fourth=createNode(88);
 
     //link first and second node
-    head->data=7;
     head->next=second;
 
     //link second and third node
-    second->data=11;
     second->next=third;
 
     //link third and fourth node
-    third->data=66;
     third->next=fourth;
-
-    //terminate the list at the third node
-    fourth->data=88;
-    fourth->next=NULL;
 
     printf("\n----------Traversal---------\n");
     //traversing the linked list
     display(head);
-
-    // int choice,val;
-    // printf("enter choice:");
-    // scanf("%d",&choice);
-    // switch(choice){
-    //     case 1:
-    //         printf("enter value to be inserted:");
-    //         scanf("%d",&val);
-    //         head=insert_at_front(head,val);
-    //         display(head);
-    //         break;
-    //     case 2:
-    // }
 
     printf("\n----------Insertion---------\n");
     //inserting at front

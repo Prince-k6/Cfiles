@@ -43,10 +43,10 @@ struct node *insert_at_end(struct node *head,int val){
     ptr->next=head;ptr->data=val;
     return head;
 }
-//Deletion
+                                                //Deletion
 //1.delete at front
 struct node *delete_at_front(struct node *head){
-    struct node *p=head->next;
+    struct node *p=head;
     struct node *q=head;
     while(p->next!=head){
         p=p->next;
@@ -59,11 +59,11 @@ struct node *delete_at_front(struct node *head){
 }
 //2.delete at end
 struct node *delete_at_end(struct node *head){
-    struct node *p=head->next;
-    struct node *q=head;
+    struct node *q=NULL;
+    struct node *p=head;
     while(p->next!=head){
+        q=p;
         p=p->next;
-        q=q->next;
     }
     q->next=head;
     free(p);
@@ -71,22 +71,29 @@ struct node *delete_at_end(struct node *head){
     return head;
 }
 
+struct node *createNode(int val){
+    struct node *ptr=(struct node*)malloc(sizeof(struct node));
+    ptr->data=val;
+    ptr->next=NULL;
+    return ptr;
+}
 int main(){
-    struct node *head=(struct node*)malloc(sizeof(struct node));
-    struct node *first=(struct node*)malloc(sizeof(struct node));
-    struct node *second=(struct node*)malloc(sizeof(struct node));
-    struct node *third=(struct node*)malloc(sizeof(struct node));
-    head->data=4;head->next=first;
-    first->data=3;first->next=second;
-    second->data=6;second->next=third;
-    third->data=1;third->next=head;
+    struct node *head=createNode(4);
+    struct node *first=createNode(3);
+    struct node *second=createNode(6);
+    struct node *third=createNode(1);
+    head->next=first;
+    first->next=second;
+    second->next=third;
+    third->next=head;
 
     //using only one node
     // struct node *head=(struct node*)malloc(sizeof(struct node));
     // head->data=8;
     // head->next=head;
 
-
+    printf("\n----TRAVERSAL----\n");
+    
     display(head);
 
     printf("\n----INSERTION----\n");
