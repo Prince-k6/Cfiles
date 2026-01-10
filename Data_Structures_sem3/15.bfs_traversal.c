@@ -38,7 +38,7 @@ int adj[7][7]={
         {1,1,1,0,1,0,0},
         {0,0,1,1,0,1,1},
         {0,0,0,0,1,0,0},
-        {0,0,0,0,1,0,0},
+        {0,0,0,0,1,0,0}
     };
 int visited[20];
 int numCities;
@@ -50,7 +50,7 @@ void bfs_traversal(int start){
     q.r=-1;
     q.arr=(int*)malloc(q.size*sizeof(int));          // Allocate memory for the queue array
    
-    for(int i=0;i<numCities;i++){   //initialize all the visited nodes to zero
+    for(int i=0;i<numCities;i++){   //initialize all the nodes to zero
         visited[i]=0;
     }
 

@@ -112,7 +112,7 @@ int main(){
 
 
 
-                                       //doubly circular linked list
+                                       //circular doubly linked list
 //Doubly linked list
 
 // #include<stdio.h>
