@@ -148,7 +148,8 @@ struct node *deleteNode(struct node *root,int val){
 
 int main(){
     struct node *root=NULL;   //root node
-    int arr[]={5,3,6,2,4,8,1};        //creating a bst using an array of elements
+    // int arr[]={5,3,6,2,4,8,1};        //creating a bst using an array of elements
+    int arr[]={6,9,5,2,8,15,24,14,7,8,5,2};
     int n=sizeof(arr)/sizeof(arr[0]);
     root=create_bst(root,arr,n);
     
@@ -183,9 +184,9 @@ int main(){
     printf("\n");
 
     //deletion
-    deleteNode(root,6);
-    inorder(root);
-    printf("\n");
+    // deleteNode(root,6);
+    // inorder(root);
+    // printf("\n");
 
     return 0;
 }

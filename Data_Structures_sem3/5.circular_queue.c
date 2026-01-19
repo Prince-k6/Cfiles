@@ -1,4 +1,12 @@
 //implementing circular queue
+
+/*
+
+rear end --> insertion
+front end-->deletion
+
+*/
+
 #include<stdio.h>
 #include<stdlib.h>
 
