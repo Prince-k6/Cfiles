@@ -15,8 +15,7 @@ struct node{
     struct node *left;
     struct node *right;
 };
-                              //global root pointer 
-
+                        
 //creating a node
 struct node *createNode(int val){
     struct node *new=(struct node *)malloc(sizeof(struct node));

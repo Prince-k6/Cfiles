@@ -15,6 +15,9 @@ struct node *createNode(int data){
 }
 struct node *insert_atend(struct node *head,int val){
     struct node *new=createNode(val);
+    if(head==NULL){
+        return new;
+    }
     struct node *temp=head;
     while(temp->next!=NULL){
         temp=temp->next;
@@ -36,12 +39,7 @@ struct node* mergeTwoLists(struct node* head1, struct node* head2){
     struct node *temp1=head1;
     struct node *temp2=head2;
     while(temp1!=NULL && temp2!=NULL){
-        if(temp1->data == temp2->data){
-            result=insert_atend(result,temp1->data);
-            result=insert_atend(result,temp2->data);
-            temp1=temp1->next;
-            temp2=temp2->next;
-        }else if(temp1->data<temp2->data){
+        if(temp1->data<=temp2->data){
             result=insert_atend(result,temp1->data);
             temp1=temp1->next;
         }else{

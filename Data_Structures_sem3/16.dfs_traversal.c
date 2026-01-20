@@ -40,6 +40,7 @@ int main(){
     printf("enter the start node to find the reachable node:");
     scanf("%d",&key);
     dfs(key);
+    printf("\n");
 
     return 0; 
 

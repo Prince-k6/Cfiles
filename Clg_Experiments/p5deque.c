@@ -46,10 +46,47 @@ void insert_atfront(int element){
     if(isempty()){
         front=0;
         rear=0;
+        deque[front]=element;
     }else{
-        front=(front+1)%MAX;
+        if(front==0){
+            front=MAX-1;      //wrap around
+        }else{
+            front--;
+        }
+        
     }
     deque[front]=element;
+    printf("%d inserted at front\n",element);
+}
+void insert_atrear(int x){
+    if(isfull()){
+        printf("dequeu overflow\n");
+        return ;
+    }else if(isempty()){
+        front=0;
+        rear=0;
+    }else{
+        if(rear==MAX-1){
+            rear=0;
+        }else{
+            rear++;
+        }
+    }
+    deque[rear]=x;
+    printf("%d inserted at rear\n",x);
+}
+
+void display(){
+    if(isempty()){
+        printf("dequeue is empty\n");
+        return;
+    }
+    int i=front;
+    while(i!=rear){
+        printf("%d\t",deque[i]);
+        i=(i+1)%MAX;
+    }
+    printf("%d\n",deque[i]);
 }
 void delete_atfront(){
     if(isempty()){
@@ -61,11 +98,49 @@ void delete_atfront(){
         front=-1;
         rear=-1;
     }else{
-        front=(front+1)%MAX;
+        if(front==MAX-1){
+            front=0;
+        }else{
+            front++;
+        }
+    }
+    printf("deleted:%d\n",deleted);
+}
+void delete_atend(){
+    if(isempty()){
+        printf("deque is empty\n");
+        return ;
+    }int deleted=deque[rear];
+    if(front==rear){
+        front=-1;
+        rear=-1;
+    }else{
+        if(rear==0){
+            rear=MAX-1;     //wrap around 
+        }else{
+            rear--;
+        }
     }
     printf("deleted:%d\n",deleted);
 }
 int main(){
+    insert_atfront(9);
+    insert_atfront(8);
+    insert_atfront(7);
+    display();
+    insert_atrear(4);
+    insert_atrear(3);
+    display();
 
+    delete_atfront();
+    delete_atfront();
+    display();
+    delete_atend();
+    delete_atend();
+    display();
+    delete_atend();
+    display();
+
+    
     return 0;
 }

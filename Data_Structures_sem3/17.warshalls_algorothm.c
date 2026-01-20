@@ -48,7 +48,7 @@ void display(int mat[n][n],int n){          //n->matrix size
         printf("\n");
     }
 }
-void warshall(){     //n->nof of nodes/cities
+void warshall(){     //n->no. of nodes/cities
     int p[n][n];
     for(int i=0;i<n;i++){
         for(int j=0;j<n;j++){
