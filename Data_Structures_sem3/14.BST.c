@@ -104,11 +104,11 @@ struct node *deleteNode(struct node *root,int val){
         root->left=deleteNode(root->left,val);}
     else if(val>root->data){
         root->right=deleteNode(root->right,val);}
-    else{
+    else{   //root->data=val
         //1.leaf node
         if(root->left==NULL && root->right==NULL){     
             free(root);
-            NULL;
+            root=NULL;
         }
         //2.one node exist
         else if(root->right==NULL){        //left node exist
@@ -126,7 +126,7 @@ struct node *deleteNode(struct node *root,int val){
             //find the greatest element from the left subtree
             struct node *parent=root;
             struct node *child=root->left;
-            while(child!=NULL){      //reaching to the right most node
+            while(child->right!=NULL){      //reaching to the right most node
                 parent=child;
                 child=child->right;
             }

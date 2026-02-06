@@ -1,104 +1,89 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include<string.h>
+#include<ctype.h>
 
-struct stack{                //stack banya
-    int size;
-    int top;
-    char *arr;
-};
-//stack operations
-void push(struct stack *s,char ch){
-    if (s->top==s->size-1){
-        printf("stack overflow\n");
+char infix[30];    //original expression
+char postfix[30];   //final exprssion
+char stack[30];     //medium of conversion (push , pop will be performed on this)
+int top=-1;
+
+void push(char item){
+    if(top==30-1){
+        printf("overflow\n");
     }else{
-        s->top++;
-        s->arr[s->top]=ch;
+        top++;
+        stack[top]=item;
     }
 }
-char pop(struct stack *s){
-    if (s->top==-1){
-        printf("stack underflow\n");
+char pop(){
+    if(top==-1){
+        printf("underflow\n");
         return -1;
-    }else{
-       char ch=s->arr[s->top];
-       s->top--;
-       return ch;
     }
+    char x = stack[top];
+    top--;
+    return x;
 }
-int isempty(struct stack *s){
-    if (s->top==-1){
+char stacktop(){
+    return stack[top];
+}
+int isempty(){
+    if(top==-1){
         return 1;
     }else{
         return 0;
     }
 }
-char stacktop(struct stack *s){
-    return s->arr[s->top];
+int prec(char op){
+    int p;
+    if(op=='(' || op ==')'){
+        p=0;}
+    if(op=='+' || op=='-'){
+        p=1;}
+    if(op=='*' || op=='/' || op=='%'){
+        p=2;}
+    if(op=='^'){
+        p=3;}
+    return p;
 }
-
-//precedence function
-int prec(char ch){
-    if (ch=='*'|| ch=='/'){
-        return  3;
-    }
-    else if(ch=='+'||ch=='-'){
-        return 2;
-    }
-    else{
-        return 0; 
-    }
-}
-//is operator function to check whether a character is operator or not
-int isoperator(char ch){
-    if(ch=='+' || ch=='-' || ch =='*'|| ch=='/'){
-        return 1;
-    }else{
-        return 0;
-    }
-}
-//infix to postfix convertor function
-char *infix_to_postfix(char *infix){
-    //declared a pointer variable of data type stack, sp=stack pointer
-    struct stack *sp=(struct stack *)malloc(sizeof(struct stack));    //stores operators
-    sp->size=30;   //can be anything else
-    sp->top=-1;
-    sp->arr=(char *)malloc(sp->size*sizeof(char));
-
-    char *postfix=(char*)malloc((strlen(infix)+1)*sizeof(char));   //final expression will stored in this
-
-    int i=0;   //for infix scan
-    int j=0;   //for postfix push
+void evaluate(){
+    int i=0;    //for infix scan
+    int j=0;    //for assigning to postfix
+    char ch;
     while(infix[i]!='\0'){
-        if(!isoperator(infix[i])){
-            postfix[j]=infix[i];
+        ch=infix[i];
+        if(isalnum(ch)){
+            postfix[j]=ch;
             j++;
-            i++;
-        }
-        else{
-            if(prec(infix[i])>prec(stacktop(sp))){    //prec=precendence function
-                push(sp,infix[i]);
-                i++;
-            }     
-            else{
-                postfix[j]=pop(sp);
+        }else if(ch=='('){
+            push(ch);
+        }else if(ch==')'){
+            char x=pop();
+            while(x!='('){
+                postfix[j]=x;
+                j++;
+                x=pop();
+            }
+        }else{
+            while(!isempty() && prec(stacktop()) >= prec(ch)){
+                postfix[j]=pop();     //pop and assign to postfix[j]  if prec of stacktop is >= infix[i]
                 j++;
             }
+            push(ch);
         }
+        i++;
     }
-    while (!isempty(sp)){
-        postfix[j]=pop(sp);
+    while(!isempty()){
+        postfix[j]=pop();
         j++;
     }
     postfix[j]='\0';
-    return postfix;
+
 }
-
 int main(){
-    char * infix;
-    printf("enter infix expression:");
-    scanf("%s",infix);        //fegts(infix,30,stdin) --> instead of '\o' -> '\n' will come
-    printf("postfix of expression: %s = %s \n",infix,infix_to_postfix(infix));
-
+    printf("enter the infix expression: ");
+    scanf("%s",infix);
+    evaluate();
+    printf("postfix expression is: %s\n",postfix);
     return 0;
 }

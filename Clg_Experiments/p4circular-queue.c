@@ -22,7 +22,7 @@ int front=-1;
 int rear=-1;
 /*
 empty condition->        if (front==-1 && rear==-1)
-full condition->         if ((rear+1)%size==front)
+full condition->         if (front==(rear+1)%size)
 one element condition->  if  (front==rear)
 
 */
@@ -57,15 +57,17 @@ void enqueue(int element){   //insertin at rear end
     Cqueue[rear]=element;
 }
 void dequeue(){          //deletion at front end
+    int deleted;
     if(isempty()){
         printf("Queue underflow, cannot delete\n");
         return ;
     }
-    int deleted=Cqueue[front];
     if(front==rear){     //one element condition
+        deleted=Cqueue[front];
         front=-1;
         rear=-1;
     }else{       //more than element
+        deleted=Cqueue[front];
         front=(front+1)%MAX;
     }
     printf("Deleted:%d\n",deleted);

@@ -34,11 +34,11 @@ int pop(){
 }
 int eval_prefix_exp(char *expression){
     int op1,op2,result;
-    for(int i=strlen(expression)-1;i>=00;i--){
+    for(int i=strlen(expression)-1;i>=0;i--){
         if(isdigit(expression[i])){
             push(expression[i]-'0');     // expression-'0' or else ascii value will be stored [char1-char2=int value]
             //int value will be pushed to stack not char.   ....basically it is for converting into integer value
-        }else{    //if it is not digti then it must be operator
+        }else{    //if it is not digit then it must be operator
             op1=pop();           //operand2 first because its a postfix expression 
             op2=pop();           //on scanning from left->right operand1 will be popped later and op1 will be popped first
             switch(expression[i]){
