@@ -50,10 +50,8 @@ int main(){
                 }
             }
         }
-        
         u = find(u);
         v = find(v);
-        
         if(uni(u, v)){
             printf("%d edge (%d,%d) = %d\n", ne++, a, b, min);
             mincost += min;
