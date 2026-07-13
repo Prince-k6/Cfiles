@@ -3,7 +3,8 @@
 
 #include<stdio.h>
 
-void findSubsets(int S[],int n,int idx,int d,int subset[],int size){
+int n;
+void findSubsets(int i,int d, int arr[],int subset[],int size){
     if(d==0){
         printf("{ ");
         for(int i=0;i<size-1;i++){
@@ -12,33 +13,29 @@ void findSubsets(int S[],int n,int idx,int d,int subset[],int size){
         printf("%d }\n",subset[size-1]);
         return;
     }
-    if(d<0 || idx>=n){
+    if(d<0 || i>=n){
         return;
     }
-    subset[size] = S[idx];
-    findSubsets(S,n,idx+1,d-S[idx],subset,size+1);
-    findSubsets(S,n,idx+1,d,subset,size);
+    subset[size] = arr[i];
+    findSubsets(i+1,d-arr[i],arr,subset,size+1);
+    findSubsets(i+1,d,arr,subset, size);
 }
 int main(){
-    // int S[] = {1,2,5,6,8};
-    // int S[] = {3,10,11,20};
-    // int S[] = {1,2,3,4};
-    int S[] = {2,7,10};
+    // int arr[] = {1,2,5,6,8};
+    // int arr[] = {3,10,11,20};
+    int arr[] = {1,2,3,4};
+    // int arr[] = {2,7,10};
 
-    int n = sizeof(S)/sizeof(S[0]);
+    n = sizeof(arr)/sizeof(arr[0]);
     // int d = 9;
     // int d = 24;
     // int d =10;
     int d =7;
 
     int subset[n];
-    int size = 0;
 
-    findSubsets(S,n,0,d,subset,size);
-
-    if(size==0){
-        printf("No other subset found\n");
-    }
+    findSubsets(0,d,arr,subset,0); 
+    printf("No other subset found\n");
     return 0;
 }
 

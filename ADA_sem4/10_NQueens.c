@@ -22,17 +22,17 @@ void print_solution() {
 }
 
 bool is_safe(int row, int col) {
-  for (int i = 0; i < n; i++) {
+  for (int i = 0; i < n; i++) {        //for horizontal and vertical
     if (board[row][i] || board[i][col]) {
       return false;
     }
   }
-  for (int i = row, j = col; i >= 0 && j >= 0; i--, j--) {
+  for (int i = row, j = col; i >= 0 && j >= 0; i--, j--) {      //left diagonal
     if (board[i][j]) {
       return false;
     }
   }
-  for (int i = row, j = col; i >= 0 && j <= n - 1; i--, j++) {
+  for (int i = row, j = col; i >= 0 && j <= n - 1; i--, j++) {     //right diagonal
     if (board[i][j]) {
       return false;
     }

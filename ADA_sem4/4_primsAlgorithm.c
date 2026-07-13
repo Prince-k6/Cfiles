@@ -1,47 +1,57 @@
-
-#include <stdio.h>
-#include <limits.h>   //for INT_MAX, INT_MIN
-#include <stdbool.h>
+//prims algorithm practice
+#include<stdio.h>
+#include<stdlib.h>
+#include<limits.h>      //for INT_MAX, INT_MIN
+#include<stdbool.h>
 
 #define V 5
 
-int minKey(int key[], bool mstSet[]){
+int minKey(int key[V], int mstSet[V]){
     int min = INT_MAX, min_index;
-    for (int v = 0; v < V; v++)
-        if (mstSet[v] == false && key[v] < min)
-            min = key[v], min_index = v;
+    for(int i=0; i<V ;i++){
+        if(key[i] < min && !mstSet[i]){
+            min = key[i];
+            min_index = i;
+        }
+    }
     return min_index;
 }
 
-void printMST(int parent[], int n, int graph[][V]){
-    printf("Edge \t Weight\n");
-    for (int i = 1; i < n; i++)
-        printf("%d - %d \t %d \n", parent[i], i, graph[i][parent[i]]);
+void printMST(int parent[V], int graph[V][V]){
+    int totalCost = 0;
+    for(int i=1; i<V; i++){
+        printf("%d edge(%d, %d) = %d\n",i,i,parent[i],graph[i][parent[i]]);
+        totalCost += graph[i][parent[i]];
+    }
+    printf("minimum cost of spanning tree: %d \n", totalCost);
 }
 
-void primMST(int graph[][V]){
-    int parent[V];       // Array to store constructed MST
-    int key[V];          // Key values used to pick minimum weight edge in cut
-    bool mstSet[V];      // To represent vertices not yet included in MST
-    
-    for (int i = 0; i < V; i++)
-        key[i] = INT_MAX, mstSet[i] = false;
-    
-    key[0] = 0;          // Make key 0 for the source vertex
-    parent[0] = -1;      // First node is always root of MST
-    
-    for (int count = 0; count < V - 1; count++){
+void primsMST(int graph[V][V]){
+    int parent[V];           //to store the final MST 
+    int key[V];              //to find the minimum value of an edge
+    int mstSet[V];           //to keep a track of which all nodes are included in the mst
+
+    for(int i=0; i<V;i++){
+        mstSet[i] = false;
+        key[i] = INT_MAX;
+    }
+    key[0] = 0;
+    parent[0] = -1;
+
+    for(int count=1 ; count<V; count++){    //loop only for V-1 edges
         int u = minKey(key, mstSet);
         mstSet[u] = true;
-        
-        for (int v = 0; v < V; v++){
-            if (graph[u][v] && mstSet[v] == false && graph[u][v] < key[v]){
-                parent[v] = u, key[v] = graph[u][v];
+
+        for(int v=0; v<V; v++){
+            if(graph[u][v] && !mstSet[v] && graph[u][v] < key[v]){
+                parent[v] = u;
+                key[v] = graph[u][v];
             }
         }
     }
-    
-    printMST(parent, V, graph);
+
+    printMST(parent, graph);
+
 }
 
 
@@ -53,7 +63,6 @@ int main(){
         {6, 8, 0, 0, 9},
         {0, 5, 7, 9, 0}
     };
-    
-    primMST(graph);
+    primsMST(graph);
     return 0;
 }

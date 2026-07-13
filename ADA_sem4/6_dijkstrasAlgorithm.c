@@ -2,87 +2,76 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#define MAX_VERTICES 1000
-#define INF INT_MAX
+#define MAX 100
 
-int graph[MAX_VERTICES][MAX_VERTICES];
-int distance[MAX_VERTICES];
-bool visited[MAX_VERTICES];
 
-int num_vertices;
+// int graph[MAX][MAX];
+int n = 4;
+int graph[MAX][MAX] = {
+    {0, 2, 5, 0},
+    {2, 0, 1, 6},
+    {5, 1, 0, 2},
+    {0, 6, 2, 0}
+};
+int dist[MAX];          
+bool visited[MAX];
 
-int get_min_distance_vertex() {
-  int min_distance = INF;
-  int min_vertex = -1;
-  for (int i = 0; i < num_vertices; i++) {
-    if (!visited[i] && distance[i] < min_distance) {
-      min_distance = distance[i];
-      min_vertex = i;
+int getMinDistVertex() {
+    int min_dist = INT_MAX;
+    int min_vertex = -1;
+    for (int i = 0; i < n; i++) {
+        if (!visited[i] && dist[i] < min_dist) {
+            min_dist = dist[i];
+            min_vertex = i;
+        }
     }
-  }
-  return min_vertex;
+    return min_vertex;
 }
 
-void dijkstra(int start_vertex) {
-  for (int i = 0; i < num_vertices; i++) {
-    distance[i] = INF;
-    visited[i] = false;
-  }
-  distance[start_vertex] = 0;
-
-  for (int i = 0; i < num_vertices - 1; i++) {
-    int current_vertex = get_min_distance_vertex();
-    visited[current_vertex] = true;
-
-    for (int j = 0; j < num_vertices; j++) {
-      if (!visited[j] && graph[current_vertex][j] != 0) {
-        int new_distance = distance[current_vertex] + graph[current_vertex][j];
-        if (new_distance < distance[j]) {
-          distance[j] = new_distance;
-        }
-      }
+void dijkstra(int start) {
+    for (int i = 0; i < n; i++) {
+        dist[i] = INT_MAX;
+        visited[i] = false;
     }
-  }
+    dist[start] = 0;
+
+    for (int i = 0; i < n - 1; i++) {
+        int u = getMinDistVertex();
+        visited[u] = true;
+
+        for (int v = 0; v < n; v++) {
+            if (graph[u][v] && !visited[v] && dist[u] != INT_MAX) {
+                int new_dist = dist[u] + graph[u][v];
+                if (new_dist < dist[v]) {
+                    dist[v] = new_dist;
+                }
+            }
+        }
+    }
 }
 
 int main() {
-  int num_edges;
-  int start_vertex;
+    // printf("Enter number of vertices: ");
+    // scanf("%d", &n);
 
-  printf("Enter number of vertices: ");
-  scanf("%d", &num_vertices);
+    // printf("Enter the cost adjacency matrix (use 0 for no edge):\n");
+    // for (int i = 0; i < n; i++) {
+    //     for (int j = 0; j < n; j++) {
+    //         // FIXED: Added missing '&' operator to prevent crash
+    //         scanf("%d", &graph[i][j]); 
+    //     }
+    // }
 
-  printf("Enter number of edges: ");
-  scanf("%d", &num_edges);
+    int start;
+    printf("Enter start vertex: ");
+    scanf("%d", &start);
 
-  for (int i = 0; i < num_vertices; i++) {
-    for (int j = 0; j < num_vertices; j++) {
-      graph[i][j] = 0;
+    dijkstra(start);
+
+    printf("Shortest distances from vertex %d:\n", start);
+    for (int i = 0; i < n; i++) {
+        printf("Vertex %d: %d\n", i, dist[i]); // Guaranteed to not be inf
     }
-  }
 
-  for (int i = 0; i < num_edges; i++) {
-    int u, v, w;
-    printf("Enter edge %d (u v w): ", i + 1);
-    scanf("%d %d %d", &u, &v, &w);
-    graph[u][v] = w;
-    graph[v][u] = w; // assume an undirected graph
-  }
-
-  printf("Enter start vertex: ");
-  scanf("%d", &start_vertex);
-
-  dijkstra(start_vertex);
-
-  printf("Shortest distances from vertex %d:\n", start_vertex);
-  for (int i = 0; i < num_vertices; i++) {
-    printf("Vertex %d: ", i);
-    if (distance[i] == INF) {
-      printf("inf\n");
-    } else {
-      printf("%d\n", distance[i]);
-    }
-  }
-
-  return 0;
+    return 0;
 }

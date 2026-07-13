@@ -69,11 +69,11 @@ int main(){
     mergeSort(arr,0,n-1);
     end = clock();
 
-    printf("\nSorted array : ");
-    for(int i=0;i<n;i++){
-        printf("%d\t",arr[i]);
-    }
-    printf("\n");
+    // printf("\nSorted array : ");
+    // for(int i=0;i<n;i++){
+    //     printf("%d\t",arr[i]);
+    // }
+    // printf("\n");
 
     time_taken = ((double) (end-start))/CLOCKS_PER_SEC;
     printf("\nTime taken to sort %d Elements using mergeSort : %lf \n",n,time_taken);

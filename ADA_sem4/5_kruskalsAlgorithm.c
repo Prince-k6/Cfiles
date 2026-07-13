@@ -12,6 +12,7 @@ int find(int i){
     }
     return i;
 }
+
 bool uni(int a, int b){
     int u = find(a);      //find the parent of uth node
     int v = find(b);      // find the parent of vth node
@@ -55,7 +56,7 @@ int main(){
             printf("%d edge(%d,%d) = %d\n",ne++,a,b,min);
             minCost += min;
         }
-        cost[a][b] = cost[b][a] = 999;     //so that same edge doesn't repeat
+        cost[a][b] = cost[b][a] = 999;     //so that same edge doesn't repeat itself
     }
     printf("minimum cost of spanning tree : %d\n",minCost);
     return 0;

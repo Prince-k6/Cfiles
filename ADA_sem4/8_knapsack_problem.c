@@ -33,7 +33,7 @@ int main() {
   printf("Enter the maximum weight capacity of the knapsack: ");
   scanf("%d", &W);
 
-  printf("The maximum value that can be obtained is: %d",
+  printf("The maximum value that can be obtained is: %d\n",
          knapsackDP(n, W, wt, val));
   return 0;
 }

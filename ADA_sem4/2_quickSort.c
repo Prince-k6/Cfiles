@@ -20,7 +20,7 @@ int partition(int arr[],int st,int end){
     int idx = st-1;
     int pivot = arr[end];
 
-    for(int j=st;j<end;j++){
+    for(int j=st;j<end;j++){      //last index is not included
         if(arr[j]<=pivot){
             idx++;
             swap(&arr[idx],&arr[j]);
